@@ -64,6 +64,8 @@ void *t1_func(void *arg)
 			rc);
 		exit(PTS_FAIL);
 	}
+
+	return NULL;
 }
 
 int main(void)
@@ -103,11 +105,6 @@ int main(void)
 		fprintf(stderr,
 			"Test FAILED: Did not re-acquire mutex after timedout out call to pthread_cond_timedwait\n");
 		return PTS_FAIL;
-	}
-
-	if (pthread_mutex_unlock(&td.mutex) != 0) {
-		fprintf(stderr, "Main failed to release mutex\n");
-		return PTS_UNRESOLVED;
 	}
 
 	switch ((long)th_ret) {

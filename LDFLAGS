@@ -1,0 +1,1 @@
+-lposix_error_mapper -DB_USE_POSITIVE_POSIX_ERRORS

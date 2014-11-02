@@ -46,7 +46,8 @@ int main(void)
 	ssize_t size = 1024;
 	int fd;
 
-	snprintf(tmpfname, sizeof(tmpfname), "/tmp/pts_mmap_7_2_%d", getpid());
+	snprintf(tmpfname, sizeof(tmpfname), "/tmp/pts_mmap_7_2_%ld",
+		(long)getpid());
 	unlink(tmpfname);
 	fd = open(tmpfname, O_CREAT | O_RDWR | O_EXCL, S_IRUSR | S_IWUSR);
 	if (fd == -1) {

@@ -17,9 +17,10 @@
  *
  */
 
+#include <errno.h>
 #include <pthread.h>
 #include <stdio.h>
-#include <errno.h>
+#include <string.h>
 #include <unistd.h>
 #include "posixtest.h"
 
@@ -31,7 +32,7 @@ void *a_thread_func()
 	/* If the thread wasn't canceled in 10 seconds, time out */
 	sleep(10);
 
-	perror("Thread couldn't be canceled (at cleanup time), timing out\n");
+	printf("Thread couldn't be canceled (at cleanup time), timing out\n");
 	pthread_exit(0);
 	return NULL;
 }
@@ -44,20 +45,20 @@ int main(void)
 
 	/* Initialize attribute */
 	if (pthread_attr_init(&new_attr) != 0) {
-		perror("Cannot initialize attribute object\n");
+		printf("Cannot initialize attribute object\n");
 		return PTS_UNRESOLVED;
 	}
 
 	/* Set the attribute object to be joinable */
 	if (pthread_attr_setdetachstate(&new_attr, PTHREAD_CREATE_JOINABLE) !=
 	    0) {
-		perror("Error in pthread_attr_setdetachstate()\n");
+		printf("Error in pthread_attr_setdetachstate()\n");
 		return PTS_UNRESOLVED;
 	}
 
 	/* Create the thread */
 	if (pthread_create(&new_th, &new_attr, a_thread_func, NULL) != 0) {
-		perror("Error creating thread\n");
+		printf("Error creating thread\n");
 		return PTS_UNRESOLVED;
 	}
 
@@ -75,7 +76,7 @@ int main(void)
 			printf("Test FAILED\n");
 			return PTS_FAIL;
 		}
-		perror("Error canceling thread\n");
+		printf("Error canceling thread: %s\n", strerror(ret));
 		return PTS_UNRESOLVED;
 	}
 
